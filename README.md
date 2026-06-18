@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Artisan Kiln — Ceramic Tile Order Form
+
+Interactive single-page order form for ceramic tiles. Built as a test assignment for **The Artisan Kiln**.
+
+## Stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS** (custom theme in `tailwind.config.js`)
+- **Redux Toolkit** (cart, design grid, checkout state)
+
+## Features
+
+- Responsive layout: mobile (vertical form) and desktop (3-column with design tool)
+- Shopping cart with quantity editing, add/remove items, live totals
+- Shipping logic: free over $500, otherwise $25
+- Desktop-only 7×7 design grid with palette (click-to-place + drag-and-drop)
+- Checkout validation (customer info, email, credit card fields)
+- Payment method switching (Credit Card, PayPal, Apple Pay, Bank Transfer)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Other scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # production build
+npm run start   # run production server
+npm run lint    # ESLint
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/              # Next.js App Router pages
+  components/       # UI, cart, checkout, design tool, layout
+  data/             # Tile catalog
+  lib/              # Pricing & validation helpers
+  store/            # Redux slices & selectors
+  types/            # Shared TypeScript types
+public/
+  tiles/            # Tile pattern SVGs
+  decor/            # Decorative assets
+design/             # Reference mockups (mobile & desktop)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design References
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Mobile: `design/design_mobile.png`
+- Desktop: `design/design_desktop.png`
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The app is ready for [Vercel](https://vercel.com):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push the repository to GitHub/GitLab
+2. Import the project in Vercel
+3. Deploy (framework preset: Next.js)
+
+---
+
+## Original Assignment (ТЗ)
+
+See the technical requirements in the assignment brief: pixel-perfect responsive layout, Redux state for cart and design grid, initial tile data (Ocean Wave, Forest Fern, Terracotta Dot, Yellow Star), and checkout form validation.
+
+**Business logic:**
+
+- `Subtotal` = sum of (quantity × unit price)
+- `Shipping` = $0 if subtotal > $500, else $25
+- `Grand Total` = subtotal + shipping
