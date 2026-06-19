@@ -24,7 +24,8 @@ export interface CartItem {
   quantity: number;
 }
 
-export type PaymentMethod = '' | 'credit-card' | 'paypal' | 'apple-pay' | 'bank-transfer';
+export type PaymentMethod = 'credit-card' | 'paypal' | 'apple-pay' | 'bank-transfer';
+export type PaymentMethodOrEmpty = '' | PaymentMethod;
 
 export type GridCell = TileId | null;
 
