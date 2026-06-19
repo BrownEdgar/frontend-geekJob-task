@@ -1,5 +1,5 @@
-import { OrderSummary } from '@/components/cart/OrderSummary';
 import { OrderTableSection } from '@/components/cart/OrderTableSection';
+import { CheckoutFormProvider } from '@/components/checkout/CheckoutFormProvider';
 import { CheckoutSection } from '@/components/checkout/CheckoutSection';
 import { CustomerForm } from '@/components/checkout/CustomerForm';
 import { OrderCheckoutPanel } from '@/components/checkout/OrderCheckoutPanel';
@@ -17,12 +17,14 @@ export default function HomePage() {
         <PageTitle />
 
         {/* Mobile: vertical layout */}
-        <div className="flex flex-col lg:hidden">
-          <CustomerForm />
-          <OrderTableSection />
-          <OrderSummary />
-          <CheckoutSection showSubmit={false} />
-        </div>
+        <CheckoutFormProvider>
+          <div className="flex flex-col lg:hidden">
+            <CustomerForm />
+            <OrderTableSection />
+
+            <CheckoutSection showSubmit={false} />
+          </div>
+        </CheckoutFormProvider>
 
         {/* Desktop: responsive layout with row wrap */}
         <div

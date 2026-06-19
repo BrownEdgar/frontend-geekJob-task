@@ -1,16 +1,14 @@
 'use client';
 
-import { setPaymentMethod } from '@/app/store/features/checkout';
-import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
-import {
-  CreditCardFields,
-  type CreditCardFieldsProps,
-} from '@/components/checkout/CreditCardFields';
+import { useCheckoutFormContext } from '@/components/checkout/CheckoutFormProvider';
+import { CreditCardFields } from '@/components/checkout/CreditCardFields';
 import { PAYMENT_ICONS, PAYMENT_METHODS, PAYMENT_METHOD_LABELS } from '@/constants/payment';
 import { cn } from '@/lib/cn';
+import { type CheckoutFormValues } from '@/lib/validation';
 import type { PaymentMethod } from '@/types';
 
 import Image from 'next/image';
+import { useFormContext } from 'react-hook-form';
 
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
@@ -20,49 +18,48 @@ interface PaymentOptionProps {
   method: PaymentMethod;
   selected: boolean;
   onSelect: (method: PaymentMethod) => void;
-  creditCardFields?: CreditCardFieldsProps;
-}
-interface PaymentMethodSelectorProps {
-  creditCardFields?: CreditCardFieldsProps;
 }
 
-export function PaymentOption({
-  method,
-  selected,
-  onSelect,
-  creditCardFields,
-}: PaymentOptionProps) {
+export function PaymentOption({ method, selected, onSelect }: PaymentOptionProps) {
   const isCreditCard = method === 'credit-card';
-  const showCreditCardForm = isCreditCard && selected && creditCardFields;
+  const showCreditCardForm = isCreditCard && selected;
 
   return (
     <motion.div
       layout
       transition={paymentOptionTransition}
+      role="radio"
+      aria-checked={selected}
+      aria-label={PAYMENT_METHOD_LABELS[method]}
+      tabIndex={0}
+      onClick={() => onSelect(method)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect(method);
+        }
+      }}
       className={cn(
-        'sketch-border flex w-full flex-col gap-2 p-3 transition-colors',
+        'sketch-border flex w-full cursor-pointer flex-col gap-2 p-3 transition-colors',
         selected && 'ring-ink ring-2',
         showCreditCardForm && 'bg-cream col-span-full'
       )}
     >
-      <motion.button
-        type="button"
+      <motion.div
         layout="position"
-        onClick={() => onSelect(method)}
         whileTap={{ scale: 0.98 }}
-        className={cn('flex w-full cursor-pointer flex-col items-center gap-2 transition-colors')}
-        aria-pressed={selected}
+        className="flex w-full flex-col items-center gap-2"
       >
-        <motion.span
-          layout
-          className={cn(
-            'border-ink flex h-4 w-4 items-center justify-center rounded-full border-2 bg-transparent',
-            {
-              selected: 'bg-ink',
-            }
-          )}
-          aria-hidden
-        >
+        <div className="relative flex h-4 w-4 items-center justify-center">
+          <input
+            type="radio"
+            id={`payment-${method}`}
+            name="payment-method"
+            value={method}
+            checked={selected}
+            onChange={() => onSelect(method)}
+            className="border-ink h-4 w-4 appearance-none rounded-full border-2 bg-transparent"
+          />
           <AnimatePresence initial={false}>
             {selected && (
               <motion.span
@@ -70,29 +67,28 @@ export function PaymentOption({
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="h-1.5 w-1.5 rounded-full"
+                className="bg-ink pointer-events-none absolute h-1.5 w-1.5 rounded-full"
               />
             )}
           </AnimatePresence>
-        </motion.span>
-        {PAYMENT_ICONS[method] ? (
-          <Image
-            src={PAYMENT_ICONS[method]!}
-            alt={PAYMENT_METHOD_LABELS[method]}
-            width={32}
-            height={32}
-            className="h-8 w-8 object-contain"
-            aria-hidden
-          />
-        ) : (
-          <span className="text-lg" aria-hidden>
-            🏦
-          </span>
-        )}
-        <p className="text-normal text-center leading-tight font-semibold uppercase">
+        </div>
+        <Image
+          src={PAYMENT_ICONS[method]!}
+          alt={PAYMENT_METHOD_LABELS[method]}
+          width={50}
+          height={50}
+          className="h-16 w-16"
+          aria-hidden
+        />
+        <p
+          className={cn(
+            'text-normal leading-tight font-semibold uppercase',
+            selected ? 'text-left' : 'text-center'
+          )}
+        >
           {PAYMENT_METHOD_LABELS[method]}
         </p>
-      </motion.button>
+      </motion.div>
 
       <AnimatePresence initial={false}>
         {showCreditCardForm && (
@@ -103,8 +99,10 @@ export function PaymentOption({
             exit={{ height: 0, opacity: 0 }}
             transition={paymentOptionTransition}
             className="overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
           >
-            <CreditCardFields {...creditCardFields} />
+            <CreditCardFields />
           </motion.div>
         )}
       </AnimatePresence>
@@ -112,9 +110,10 @@ export function PaymentOption({
   );
 }
 
-export function PaymentMethodSelector({ creditCardFields }: PaymentMethodSelectorProps) {
-  const dispatch = useAppDispatch();
-  const paymentMethod = useAppSelector((s) => s.checkout.paymentMethod);
+export function PaymentMethodSelector() {
+  const { watch } = useFormContext<CheckoutFormValues>();
+  const { setCheckoutField } = useCheckoutFormContext();
+  const paymentMethod = watch('paymentMethod');
 
   return (
     <section>
@@ -129,8 +128,7 @@ export function PaymentMethodSelector({ creditCardFields }: PaymentMethodSelecto
               key={method}
               method={method}
               selected={paymentMethod === method}
-              onSelect={(m) => dispatch(setPaymentMethod(m))}
-              creditCardFields={method === 'credit-card' ? creditCardFields : undefined}
+              onSelect={(m) => setCheckoutField('paymentMethod', m)}
             />
           ))}
         </div>

@@ -23,7 +23,7 @@ Interactive, fully-featured ceramic tile order form with a drag-and-drop design 
 
 ## 📦 Project Structure
 
-```
+```bash
 src/
 ├── app/
 │   ├── store/                    # Redux store (modern structure)
@@ -199,3 +199,27 @@ Port: 3000 (configurable via PORT env var)
 ## 👤 Credits
 
 Built for **The Artisan Kiln** ceramic tile order system.
+
+## 💬 Improvement Opportunities & Discussion Points
+
+The following items are intentional conversation starters for design review, QA, and next iterations. Each pairs a **question** (what we observed) with a **proposal** (a concrete direction worth evaluating).
+
+### 1. Project Notes field on mobile
+
+**Question:** On mobile, the “Project Notes” control uses a different label treatment and sits far below the main checkout content—visually separated from the **Order Summary** and customer fields. Was this layout driven by viewport constraints, or is it an inconsistency between breakpoints?
+
+**Proposal:** Treat Project Notes as part of the same checkout group as name, email, and order summary. Use one consistent label pattern (e.g. match other optional fields) and place the field directly under the primary form block on mobile so users do not have to hunt at the bottom of the page.
+
+### 2. Payment method UI consistency
+
+**Question:** The **PayPal** option and **Credit Card** option appear to follow different visual rules (spacing, borders, icon alignment, or selected/hover states). Should payment methods read as a single radio group with identical card chrome?
+
+**Proposal:** Define one reusable payment-method tile component (shared padding, sketch border, focus ring, and active state) and map each method (Credit Card, PayPal, Apple Pay, Bank Transfer) through it so the checkout step feels cohesive and production-ready.
+
+### 3. Primary navigation on small screens
+
+**Question:** When the header does not scroll horizontally, several main-menu links may be off-screen or unreachable on narrower viewports. Is full navigation a requirement on mobile, or is a simplified nav acceptable?
+
+**Proposal:** Add a responsive **burger menu** (icon button + slide-over or dropdown panel) that exposes all routes, preserves current page indication, and includes basic accessibility (`aria-expanded`, focus trap, Escape to close). This keeps the brand header clean while ensuring every section remains one tap away.
+
+---

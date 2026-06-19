@@ -5,7 +5,7 @@ export interface FooterDecorElement {
   src: string;
 }
 
-export const PAGE_TITLE_DECOR_TILES = ['/decor/castle.svg', '/decor/fire.svg'] as const;
+export const PAGE_TITLE_DECOR_TILES = ['/decor/castle.svg', '/decor/fireplace.png'] as const;
 
 export const KILN_BANNER_TILES = {
   left: ['/tiles/marble-swirl.png', '/tiles/geometric-grid.png', '/tiles/desert-sand.png'],

@@ -1,7 +1,7 @@
 'use client';
 
 import { AddTileButton } from '@/components/cart/AddTileButton';
-import { OrderTotals } from '@/components/cart/OrderSummary';
+import OrderSummary from '@/components/cart/OrderSummary';
 import { OrderTable } from '@/components/cart/OrderTable';
 import { OrderTableRow } from '@/components/cart/OrderTableRow';
 
@@ -11,7 +11,7 @@ export function OrderTableSection() {
   return (
     <>
       <OrderTable>{(item) => <OrderTableRow item={item} />}</OrderTable>
-      <div className="flex items-start justify-between gap-2">
+      <div className="relative mt-2 flex items-start justify-between gap-2 lg:mt-0">
         <div className="shrink-0">
           <Image
             src="/hand.png"
@@ -25,7 +25,7 @@ export function OrderTableSection() {
           <AddTileButton />
         </div>
         <div className="shrink-0">
-          <OrderTotals />
+          <OrderSummary />
         </div>
       </div>
     </>

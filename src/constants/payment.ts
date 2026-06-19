@@ -17,8 +17,8 @@ export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
 };
 
 export const PAYMENT_ICONS: Record<PaymentMethod, string | null> = {
-  'credit-card': '/cards .png',
+  'credit-card': '/cards.png',
   paypal: '/paypal.png',
   'apple-pay': '/apple-pay.png',
-  'bank-transfer': null,
+  'bank-transfer': '/bank-transfer.png',
 };

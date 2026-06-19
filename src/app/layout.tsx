@@ -36,7 +36,10 @@ export default function RootLayout({
       lang="en"
       className={`${displayFont.variable} ${bodyFont.variable} ${sketchFont.variable} h-full antialiased`}
     >
-      <body className="paper-texture text-ink font-body flex min-h-full flex-col">
+      <body
+        className="paper-texture text-ink font-body flex min-h-full flex-col"
+        suppressHydrationWarning
+      >
         <StoreProvider>{children}</StoreProvider>
       </body>
     </html>

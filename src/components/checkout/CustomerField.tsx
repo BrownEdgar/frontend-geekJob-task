@@ -26,7 +26,7 @@ export function CustomerField({
       <div className="flex items-end gap-1">
         <label
           htmlFor={id}
-          className={cn('shrink-0 text-[10px] font-bold uppercase', labelClassName)}
+          className={cn('shrink-0 text-base font-bold uppercase lg:text-[10px]', labelClassName)}
         >
           {label}:
         </label>
@@ -36,7 +36,7 @@ export function CustomerField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={cn(
-            'min-w-0 flex-1 border-0 border-b bg-transparent! px-0.5 text-xs outline-none',
+            'min-w-0 flex-1 border-0 border-b bg-transparent! px-0.5 text-base outline-none lg:text-[10px]',
             error ? 'border-b-red-600' : 'border-b-ink'
           )}
         />

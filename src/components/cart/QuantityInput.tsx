@@ -19,7 +19,7 @@ export function QuantityInput({ value, onChange }: QuantityInputProps) {
             const parsed = parseInt(e.target.value, 10);
             onChange(Number.isNaN(parsed) ? 0 : parsed);
           }}
-          className="no-number-spinners w-12 max-w-12 min-w-0 bg-transparent text-center text-sm outline-none"
+          className="no-number-spinners w-12 max-w-12 min-w-0 bg-transparent! text-center text-sm outline-none"
           aria-label="Quantity in square feet"
         />
       </BracketedValue>

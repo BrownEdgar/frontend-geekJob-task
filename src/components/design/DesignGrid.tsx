@@ -39,7 +39,7 @@ export function DesignGrid() {
         </p>
       </div>
       <div
-        className="grid min-h-[280px] min-w-[280px] grid-cols-7 grid-rows-7"
+        className="grid min-h-[280px] max-w-[500px] min-w-[280px] grid-cols-7 grid-rows-7"
         role="grid"
         aria-label="7 by 7 tile design grid"
       >

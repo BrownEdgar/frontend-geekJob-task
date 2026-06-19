@@ -5,13 +5,13 @@ import { useAppSelector } from '@/app/store/hooks';
 import { BracketedValue } from '@/components/ui/BracketedValue';
 import { formatCurrency } from '@/lib/pricing';
 
-interface OrderTotalsProps {
+interface OrderSummaryProps {
   className?: string;
 }
 
 const rowClass = 'text-[12px] font-bold uppercase leading-4';
 
-export function OrderTotals({ className = '' }: OrderTotalsProps) {
+function OrderSummary({ className = '' }: OrderSummaryProps) {
   const subtotal = useAppSelector(selectSubtotal);
   const shipping = useAppSelector(selectShipping);
   const grandTotal = useAppSelector(selectGrandTotal);
@@ -33,6 +33,4 @@ export function OrderTotals({ className = '' }: OrderTotalsProps) {
   );
 }
 
-export function OrderSummary({ className = '' }: OrderTotalsProps) {
-  return <OrderTotals className={className} />;
-}
+export default OrderSummary;

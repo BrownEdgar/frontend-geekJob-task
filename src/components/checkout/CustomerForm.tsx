@@ -1,38 +1,25 @@
 'use client';
 
-import { setField } from '@/app/store/features/checkout';
-import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
+import { useCheckoutFormContext } from '@/components/checkout/CheckoutFormProvider';
 import { CustomerField } from '@/components/checkout/CustomerField';
-import { type CheckoutFormValues, checkoutSchema } from '@/lib/validation';
+import { type CheckoutFormValues } from '@/lib/validation';
 
-import { useForm } from 'react-hook-form';
-
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useFormContext } from 'react-hook-form';
 
 export function CustomerForm() {
-  const dispatch = useAppDispatch();
-  const checkout = useAppSelector((s) => s.checkout);
-
+  const { setCheckoutField } = useCheckoutFormContext();
   const {
-    setValue,
+    watch,
     formState: { errors },
-  } = useForm<CheckoutFormValues>({
-    resolver: zodResolver(checkoutSchema),
-    defaultValues: checkout,
-  });
-
-  const syncField = (field: keyof CheckoutFormValues, value: string) => {
-    dispatch(setField({ field: field as never, value }));
-    setValue(field, value, { shouldValidate: false });
-  };
+  } = useFormContext<CheckoutFormValues>();
 
   return (
     <section className="flex flex-col gap-1 border-b pb-12 pl-2">
       <CustomerField
         id="customer-name"
         label="Customer Name"
-        value={checkout.customerName}
-        onChange={(v) => syncField('customerName', v)}
+        value={watch('customerName') ?? ''}
+        onChange={(v) => setCheckoutField('customerName', v)}
         error={errors.customerName?.message}
         labelClassName="relative top-[4px]"
       />
@@ -43,8 +30,8 @@ export function CustomerForm() {
           label="Phone"
           type="tel"
           className="flex-1"
-          value={checkout.phone}
-          onChange={(v) => syncField('phone', v)}
+          value={watch('phone') ?? ''}
+          onChange={(v) => setCheckoutField('phone', v)}
           error={errors.phone?.message}
           labelClassName="relative top-[4px]"
         />
@@ -53,8 +40,8 @@ export function CustomerForm() {
           label="Email"
           type="email"
           className="flex-1"
-          value={checkout.email}
-          onChange={(v) => syncField('email', v)}
+          value={watch('email') ?? ''}
+          onChange={(v) => setCheckoutField('email', v)}
           error={errors.email?.message}
           labelClassName="relative top-[4px]"
         />
@@ -63,8 +50,8 @@ export function CustomerForm() {
       <CustomerField
         id="shipping-address"
         label="Shipping Address"
-        value={checkout.shippingAddress}
-        onChange={(v) => syncField('shippingAddress', v)}
+        value={watch('shippingAddress') ?? ''}
+        onChange={(v) => setCheckoutField('shippingAddress', v)}
         error={errors.shippingAddress?.message}
         labelClassName="relative top-[4px]"
       />
@@ -72,8 +59,8 @@ export function CustomerForm() {
       <CustomerField
         id="project-notes"
         label="Project Notes"
-        value={checkout.projectNotes}
-        onChange={(v) => syncField('projectNotes', v)}
+        value={watch('projectNotes') ?? ''}
+        onChange={(v) => setCheckoutField('projectNotes', v)}
         error={errors.projectNotes?.message}
         labelClassName="relative top-[4px]"
       />
