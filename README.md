@@ -16,7 +16,7 @@ Interactive, fully-featured ceramic tile order form with a drag-and-drop design 
 
 - **Next.js 16** (App Router)
 - **TypeScript** (strict mode)
-- **Redux Toolkit** (modern selectors-in-slices pattern)
+- **Redux Toolkit** (cart and design grid; checkout via React Hook Form)
 - **Tailwind CSS** (custom theme)
 - **React Hook Form** + Zod (form validation)
 - **Next.js Image** (optimized images)
@@ -29,7 +29,6 @@ src/
 │   ├── store/                    # Redux store (modern structure)
 │   │   ├── features/             # Slice definitions
 │   │   │   ├── cart.ts          # Cart slice + selectors
-│   │   │   ├── checkout.ts      # Checkout form state + actions
 │   │   │   └── designGrid.ts    # Design grid state + selectors
 │   │   ├── hooks.ts             # useAppDispatch, useAppSelector
 │   │   ├── index.ts             # Store configuration
@@ -40,7 +39,7 @@ src/
 │
 ├── components/
 │   ├── cart/                     # Order table, summary
-│   ├── checkout/                 # Customer form, payment, card fields
+│   ├── checkout/                 # CheckoutFormProvider, payment, validation
 │   ├── design/                   # Design tool, grid, palette
 │   ├── layout/                   # Header, footer, title
 │   └── ui/                       # Reusable UI components
@@ -62,10 +61,7 @@ src/
 public/
 ├── tiles/                        # Tile pattern SVGs
 ├── decor/                        # Decorative leaf SVGs
-├── add-button.png               # Cart action icon
-├── shopping-basket.png          # Remove item icon
-├── paypal.png                   # Payment method icon
-└── cards.png                    # Credit card icon
+├── ...
 ```
 
 ## 🚀 Getting Started
@@ -86,12 +82,16 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Available Scripts
 
-```bash
-npm run dev      # Start dev server with hot reload
-npm run build    # Production build
-npm run start    # Run production server
-npm run lint     # Run ESLint
-```
+| Script                 | Description                                            |
+| ---------------------- | ------------------------------------------------------ |
+| `npm run dev`          | Start the Next.js development server with hot reload   |
+| `npm run build`        | Build an optimized production bundle                   |
+| `npm run start`        | Run the production server (use after `build`)          |
+| `npm run lint`         | Run ESLint                                             |
+| `npm run format`       | Format the codebase with Prettier (writes files)       |
+| `npm run format:check` | Verify Prettier formatting without writing (use in CI) |
+
+With Yarn: replace `npm run` with `yarn` (e.g. `yarn dev`).
 
 ## 💡 Key Architecture Decisions
 
@@ -144,15 +144,15 @@ Grand Total = subtotal + shipping
 
 - Name: required, string
 - Email: required, valid email format
-- Phone: required, E.164 format
+- Phone: required, valid characters (digits, spaces, `+`, `()`, `-`)
 - Shipping Address: required, string
 - Project Notes: optional, string
 
 **Credit Card (when selected):**
 
-- Card Number: 16 digits
-- Expiration: MM/YY format
-- CVV: 3 digits
+- Card Number: 13–19 digits (spaces allowed while typing)
+- Expiration: `MM/YY`, month 01–12
+- CVV: 3–4 digits
 
 Validation powered by Zod schemas in `lib/validation.ts`
 
@@ -171,7 +171,7 @@ Validation powered by Zod schemas in `lib/validation.ts`
 
 ## 🚢 Deployment
 
-### Vercel (Recommended)
+### Vercel
 
 ```bash
 # Push to GitHub, then:
@@ -184,16 +184,14 @@ Environment variables (if needed): None required for this version
 
 ### Other Platforms
 
-Build: `npm run build`
-Start: `npm run start`
-Port: 3000 (configurable via PORT env var)
+Run `npm run build`, then `npm run start`. Default port is **3000** (`PORT` env var to override).
 
 ## 📝 Notes
 
 - Initial cart comes pre-populated with sample tiles
 - Design grid is desktop-only for UX reasons
-- All tile patterns are SVG for crisp scaling
-- Form validation is client-side only; add server validation for production
+- Tile patterns are SVG for crisp scaling
+- Client-side validation only; add server validation for production
 - Payment processing is mocked (no real Stripe/PayPal integration)
 
 ## 👤 Credits
@@ -218,8 +216,10 @@ The following items are intentional conversation starters for design review, QA,
 
 ### 3. Primary navigation on small screens
 
-**Question:** When the header does not scroll horizontally, several main-menu links may be off-screen or unreachable on narrower viewports. Is full navigation a requirement on mobile, or is a simplified nav acceptable?
+**Question:** When the header does not scroll horizontally, several main-menu links may be off-screen or unreachable on narrower viewports. The same issue affects the **footer nav** row: on small widths the link strip can overflow or wrap awkwardly, so not every footer item is easy to reach or scan. Is full navigation a requirement on mobile for both header and footer, or is a simplified nav acceptable?
 
-**Proposal:** Add a responsive **burger menu** (icon button + slide-over or dropdown panel) that exposes all routes, preserves current page indication, and includes basic accessibility (`aria-expanded`, focus trap, Escape to close). This keeps the brand header clean while ensuring every section remains one tap away.
+**Proposal:** Add a responsive **burger menu** in the header (icon button + slide-over or dropdown panel) that exposes all routes, preserves current page indication, and includes basic accessibility (`aria-expanded`, focus trap, Escape to close). For the footer, use the same responsive pattern where needed—e.g. a compact menu or stacked links on narrow viewports instead of a single horizontal row—so header and footer stay consistent and every section remains one tap away.
+
+**Note:** Some of the items above have already been addressed on my side; the list remains here for context and for anything still open for review.
 
 ---
