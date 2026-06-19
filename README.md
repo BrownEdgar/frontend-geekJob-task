@@ -2,6 +2,8 @@
 
 Interactive, fully-featured ceramic tile order form with a drag-and-drop design tool. Built with modern Next.js, Redux Toolkit, and Tailwind CSS.
 
+**Live demo (Vercel):** [https://the-artisan-kiln-lyart.vercel.app/](https://the-artisan-kiln-lyart.vercel.app/)
+
 ## 🎯 Features
 
 - **Responsive Design**: Mobile (vertical stack) and desktop (3-column layout with design tool)
@@ -172,6 +174,8 @@ Validation powered by Zod schemas in `lib/validation.ts`
 ## 🚢 Deployment
 
 ### Vercel
+
+Production deployment: [https://the-artisan-kiln-lyart.vercel.app/](https://the-artisan-kiln-lyart.vercel.app/)
 
 ```bash
 # Push to GitHub, then:
