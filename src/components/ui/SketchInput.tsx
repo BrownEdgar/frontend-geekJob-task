@@ -1,35 +1,30 @@
+import { cn } from '@/lib/cn';
+
 import type { InputHTMLAttributes } from 'react';
 
-interface SketchInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface SketchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
 }
 
-export function SketchInput({
-  label,
-  error,
-  className = '',
-  id,
-  ...props
-}: SketchInputProps) {
+export function SketchInput({ label, error, className = '', id, ...props }: SketchInputProps) {
   const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
 
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
-      <label
-        htmlFor={inputId}
-        className="text-xs font-semibold tracking-wider uppercase text-ink/80"
-      >
+    <div className={className}>
+      <label htmlFor={inputId}>
         {label}
+        <br />
+        <input
+          id={inputId}
+          className={cn(
+            'w-full border-0 border-b outline-none',
+            error ? 'border-b-red-500' : 'border-b-current'
+          )}
+          {...props}
+        />
       </label>
-      <input
-        id={inputId}
-        className={`sketch-underline w-full py-1.5 text-sm outline-none placeholder:text-ink/40 ${
-          error ? 'border-red-600' : ''
-        }`}
-        {...props}
-      />
-      {error && <span className="text-xs text-red-600">{error}</span>}
+      {error && <span>{error}</span>}
     </div>
   );
 }

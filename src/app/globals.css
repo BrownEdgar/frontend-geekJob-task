@@ -1,8 +1,8 @@
-@import "tailwindcss";
-@config "../../tailwind.config.js";
+@import 'tailwindcss';
+@config '../../tailwind.config.js';
 
 :root {
-  --background: #f5f0e6;
+  --background: rgba(250, 249, 233, 1);
   --foreground: #1a1a1a;
 }
 
@@ -13,16 +13,28 @@ body {
   min-height: 100vh;
 }
 
+input:not(
+  [type='radio'],
+  [type='checkbox'],
+  [type='button'],
+  [type='submit'],
+  [type='reset'],
+  [type='file'],
+  [type='hidden'],
+  [type='image'],
+  [type='range'],
+  [type='color']
+),
+textarea,
+select {
+  background-color: #fff;
+}
+
 @layer utilities {
   .sketch-border {
     border: 2px solid rgba(26, 26, 26, 0.75);
     border-radius: 2px;
     box-shadow: 2px 2px 0 0 rgba(26, 26, 26, 0.12);
-  }
-
-  .sketch-underline {
-    border-bottom: 2px solid rgba(26, 26, 26, 0.8);
-    background: transparent;
   }
 
   .paper-texture {
@@ -32,5 +44,26 @@ body {
       transparent 0
     );
     background-size: 24px 24px;
+  }
+
+  .lined-paper {
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 31px,
+      rgba(26, 26, 26, 0.2) 31px,
+      rgba(26, 26, 26, 0.2) 32px
+    );
+  }
+
+  .no-number-spinners {
+    appearance: textfield;
+    -moz-appearance: textfield;
+    min-width: 0;
+  }
+
+  .no-number-spinners::-webkit-inner-spin-button,
+  .no-number-spinners::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }

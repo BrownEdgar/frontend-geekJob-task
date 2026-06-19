@@ -2,7 +2,13 @@ export type TileId =
   | 'ocean-wave'
   | 'forest-fern'
   | 'terracotta-dot'
-  | 'yellow-star';
+  | 'yellow-star'
+  | 'marble-swirl'
+  | 'geometric-grid'
+  | 'floral-damask'
+  | 'desert-sand'
+  | 'midnight-cross'
+  | 'sunset-radiant';
 
 export interface TileProduct {
   id: TileId;
@@ -18,11 +24,7 @@ export interface CartItem {
   quantity: number;
 }
 
-export type PaymentMethod =
-  | 'credit-card'
-  | 'paypal'
-  | 'apple-pay'
-  | 'bank-transfer';
+export type PaymentMethod = 'credit-card' | 'paypal' | 'apple-pay' | 'bank-transfer';
 
 export type GridCell = TileId | null;
 

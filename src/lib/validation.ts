@@ -1,5 +1,6 @@
+import { PAYMENT_METHOD_VALUES } from '@/constants/payment';
+
 import { z } from 'zod';
-import type { PaymentMethod } from '@/types';
 
 export const checkoutSchema = z
   .object({
@@ -11,12 +12,7 @@ export const checkoutSchema = z
     email: z.string().email('Invalid email address'),
     shippingAddress: z.string().min(5, 'Shipping address is required'),
     projectNotes: z.string().optional(),
-    paymentMethod: z.enum([
-      'credit-card',
-      'paypal',
-      'apple-pay',
-      'bank-transfer',
-    ]),
+    paymentMethod: z.enum(PAYMENT_METHOD_VALUES),
     cardNumber: z.string().optional(),
     expiration: z.string().optional(),
     cvv: z.string().optional(),
@@ -27,7 +23,7 @@ export const checkoutSchema = z
     const cardNumber = data.cardNumber?.replace(/\s/g, '') ?? '';
     if (!/^\d{13,19}$/.test(cardNumber)) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'Card number must be 13–19 digits',
         path: ['cardNumber'],
       });
@@ -35,7 +31,7 @@ export const checkoutSchema = z
 
     if (!/^\d{2}\/\d{2}$/.test(data.expiration ?? '')) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'Use MM/YY format',
         path: ['expiration'],
       });
@@ -43,7 +39,7 @@ export const checkoutSchema = z
 
     if (!/^\d{3,4}$/.test(data.cvv ?? '')) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'CVV must be 3–4 digits',
         path: ['cvv'],
       });
@@ -51,10 +47,3 @@ export const checkoutSchema = z
   });
 
 export type CheckoutFormValues = z.infer<typeof checkoutSchema>;
-
-export const paymentMethodLabels: Record<PaymentMethod, string> = {
-  'credit-card': 'Credit/Debit Card',
-  paypal: 'PayPal',
-  'apple-pay': 'Apple Pay',
-  'bank-transfer': 'Bank Transfer',
-};

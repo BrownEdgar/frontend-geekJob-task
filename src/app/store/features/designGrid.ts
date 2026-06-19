@@ -1,14 +1,13 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { GridCell, TileId } from '@/types';
 import { GRID_SIZE } from '@/types';
 
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 function createEmptyGrid(): GridCell[][] {
-  return Array.from({ length: GRID_SIZE }, () =>
-    Array.from({ length: GRID_SIZE }, () => null)
-  );
+  return Array.from({ length: GRID_SIZE }, () => Array.from({ length: GRID_SIZE }, () => null));
 }
 
-interface DesignGridState {
+export interface DesignGridState {
   grid: GridCell[][];
   selectedPaletteTile: TileId | null;
 }
@@ -25,10 +24,7 @@ const designGridSlice = createSlice({
     selectPaletteTile: (state, action: PayloadAction<TileId | null>) => {
       state.selectedPaletteTile = action.payload;
     },
-    placeTile: (
-      state,
-      action: PayloadAction<{ row: number; col: number }>
-    ) => {
+    placeTile: (state, action: PayloadAction<{ row: number; col: number }>) => {
       if (!state.selectedPaletteTile) return;
       const { row, col } = action.payload;
       const rowCells = state.grid[row];
@@ -55,13 +51,15 @@ const designGridSlice = createSlice({
       state.selectedPaletteTile = null;
     },
   },
+  selectors: {
+    selectDesignGrid: (state) => state.grid,
+    selectSelectedPaletteTile: (state) => state.selectedPaletteTile,
+    selectIsGridEmpty: (state) => state.grid.every((row) => row.every((cell) => cell === null)),
+  },
 });
 
-export const {
-  selectPaletteTile,
-  placeTile,
-  placeTileFromDrop,
-  clearCell,
-  clearGrid,
-} = designGridSlice.actions;
+export const { selectPaletteTile, placeTile, placeTileFromDrop, clearCell, clearGrid } =
+  designGridSlice.actions;
+export const { selectDesignGrid, selectSelectedPaletteTile, selectIsGridEmpty } =
+  designGridSlice.selectors;
 export default designGridSlice.reducer;

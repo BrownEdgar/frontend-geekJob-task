@@ -1,51 +1,38 @@
 'use client';
 
-import Link from 'next/link';
-import { useAppSelector } from '@/store/hooks';
-import { selectCartItemCount } from '@/store/selectors/cartSelectors';
+import { selectCartItemCount } from '@/app/store/features/cart';
+import { useAppSelector } from '@/app/store/hooks';
+import {
+  DESKTOP_HEADER_LINKS,
+  HEADER_USER_NAME,
+  MOBILE_HEADER_LINKS,
+} from '@/constants/navigation';
 
-const mobileLinks = ['SHOP', 'COLLECTIONS', 'ABOUT US'];
-const desktopLinks = [
-  'HOME',
-  'SHOP',
-  'COLLECTIONS',
-  'ABOUT US',
-  'FAQ',
-  'GALLERY',
-  'BLOG',
-];
+import Link from 'next/link';
 
 export function Header() {
   const cartCount = useAppSelector(selectCartItemCount);
 
   return (
-    <header className="border-b border-ink/20 px-4 py-4 lg:px-8">
-      <div className="mx-auto flex max-w-7xl items-center justify-between">
-        <nav className="hidden gap-4 text-xs font-bold tracking-widest lg:flex">
-          {desktopLinks.map((link) => (
-            <Link
-              key={link}
-              href="#"
-              className="hover:text-terracotta transition-colors"
-            >
+    <header className="border-ink/20 bg-paper relative border-b px-4 py-4 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-center gap-8">
+        <nav className="hidden gap-8 text-xs font-bold tracking-widest lg:flex">
+          {DESKTOP_HEADER_LINKS.map((link) => (
+            <Link key={link} href="#" className="hover:text-terracotta transition-colors">
               {link}
             </Link>
           ))}
         </nav>
 
         <nav className="flex gap-4 text-xs font-bold tracking-widest lg:hidden">
-          {mobileLinks.map((link) => (
-            <Link
-              key={link}
-              href="#"
-              className="hover:text-terracotta transition-colors"
-            >
+          {MOBILE_HEADER_LINKS.map((link) => (
+            <Link key={link} href="#" className="hover:text-terracotta transition-colors">
               {link}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="absolute right-4 flex items-center gap-4 lg:right-8">
           <button
             type="button"
             className="relative"
@@ -55,7 +42,7 @@ export function Header() {
               🛒
             </span>
             {cartCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-terracotta text-[10px] font-bold text-cream">
+              <span className="bg-terracotta text-cream absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold">
                 {cartCount}
               </span>
             )}
@@ -65,7 +52,7 @@ export function Header() {
             <span className="text-xl" aria-hidden>
               👤
             </span>
-            <span className="text-xs font-bold tracking-wide">A. Smith</span>
+            <span className="text-xs font-bold tracking-wide">{HEADER_USER_NAME}</span>
           </span>
 
           <button

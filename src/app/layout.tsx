@@ -1,6 +1,8 @@
-import type { Metadata } from 'next';
-import { Bebas_Neue, Source_Sans_3, Caveat } from 'next/font/google';
 import { StoreProvider } from '@/providers/StoreProvider';
+
+import type { Metadata } from 'next';
+import { Bebas_Neue, Caveat, Source_Sans_3 } from 'next/font/google';
+
 import './globals.css';
 
 const displayFont = Bebas_Neue({
@@ -34,7 +36,7 @@ export default function RootLayout({
       lang="en"
       className={`${displayFont.variable} ${bodyFont.variable} ${sketchFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col paper-texture bg-cream text-ink font-body">
+      <body className="paper-texture text-ink font-body flex min-h-full flex-col">
         <StoreProvider>{children}</StoreProvider>
       </body>
     </html>

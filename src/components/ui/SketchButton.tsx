@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-interface SketchButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface SketchButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: 'default' | 'primary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
@@ -8,7 +8,7 @@ interface SketchButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses = {
   default: 'sketch-border bg-paper hover:bg-cream',
-  primary: 'sketch-border bg-ink text-cream hover:bg-ink/90',
+  primary: 'sketch-border bg-navy text-cream hover:bg-navy/90',
   ghost: 'border border-transparent hover:border-ink/30',
 };
 
@@ -28,7 +28,7 @@ export function SketchButton({
   return (
     <button
       type="button"
-      className={`inline-flex items-center justify-center gap-1.5 font-semibold tracking-wide uppercase transition-colors ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+      className={`inline-flex items-center justify-center gap-1.5 font-semibold uppercase transition-colors ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
       {...props}
     >
       {children}

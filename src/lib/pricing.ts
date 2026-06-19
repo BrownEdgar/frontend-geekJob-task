@@ -1,5 +1,5 @@
-import type { CartItem } from '@/types';
 import { TILE_CATALOG } from '@/data/tiles';
+import type { CartItem } from '@/types';
 
 const SHIPPING_THRESHOLD = 500;
 const SHIPPING_COST = 25;

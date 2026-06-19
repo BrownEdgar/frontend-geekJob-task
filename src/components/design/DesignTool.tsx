@@ -1,10 +1,11 @@
 'use client';
 
-import { useAppDispatch } from '@/store/hooks';
-import { selectPaletteTile } from '@/store/slices/designGridSlice';
-import type { TileId } from '@/types';
+import { selectPaletteTile } from '@/app/store/features/designGrid';
+import { useAppDispatch } from '@/app/store/hooks';
 import { DesignGrid } from '@/components/design/DesignGrid';
 import { DesignPalette } from '@/components/design/DesignPalette';
+import { cn } from '@/lib/cn';
+import type { TileId } from '@/types';
 
 export function DesignTool() {
   const dispatch = useAppDispatch();
@@ -14,11 +15,12 @@ export function DesignTool() {
   };
 
   return (
-    <section className="hidden lg:flex lg:flex-col">
-      <h2 className="mb-4 text-center font-display text-2xl tracking-widest">
-        VISUALIZE YOUR ORDER
-      </h2>
-      <div className="flex gap-3">
+    <section
+      className={cn('hidden min-w-[430px] lg:flex lg:w-full lg:flex-col', 'xl:w-auto xl:shrink-0')}
+    >
+      <div className="devider h-12"></div>
+      {/* Design Grid and Design Palette */}
+      <div className="sketch-border bg-paper flex min-h-[420px] min-w-[430px]">
         <DesignGrid />
         <DesignPalette onDragStart={handleDragStart} />
       </div>

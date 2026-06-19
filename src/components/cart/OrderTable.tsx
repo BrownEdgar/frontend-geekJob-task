@@ -1,34 +1,52 @@
 'use client';
 
-import { useAppSelector } from '@/store/hooks';
-import { selectCartItems } from '@/store/selectors/cartSelectors';
-import { OrderTableRow } from '@/components/cart/OrderTableRow';
-import { AddTileButton } from '@/components/cart/AddTileButton';
+import { selectCartItems } from '@/app/store/features/cart';
+import { useAppSelector } from '@/app/store/hooks';
+import { ORDER_TABLE_COLUMNS, getCellClassName } from '@/components/cart/orderTableConfig';
+import type { CartItem } from '@/types';
 
-export function OrderTable() {
+import { Fragment, type ReactNode } from 'react';
+
+import { AnimatePresence } from 'framer-motion';
+
+export interface OrderTableProps {
+  children: (item: CartItem) => ReactNode;
+}
+
+export function OrderTable({ children }: OrderTableProps) {
   const items = useAppSelector(selectCartItems);
 
   return (
     <section className="w-full">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[480px] border-collapse text-left">
-          <thead>
-            <tr className="border-b-2 border-ink/60 text-xs font-bold tracking-wider uppercase">
-              <th className="pb-2 pr-2">Tile Collection</th>
-              <th className="pb-2 px-2 text-center">Item</th>
-              <th className="pb-2 px-2 text-center">Quantity (sq. ft.)</th>
-              <th className="pb-2 px-2 text-center">Unit Price ($)</th>
-              <th className="pb-2 pl-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <OrderTableRow key={item.tileId} item={item} />
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <AddTileButton />
+      {items.length > 0 && (
+        <div className="overflow-x-auto">
+          {/* SHOPPING CART & DESIGN TOOL Table */}
+          <table className="border-ink w-full min-w-[480px] border-collapse border-2 text-left">
+            <caption className="font-display mb-2 caption-top text-left text-lg tracking-[0.12em] uppercase lg:text-4xl">
+              SHOPPING CART & DESIGN TOOL
+            </caption>
+            <thead>
+              <tr className="bg-paper text-xs font-bold tracking-wider uppercase">
+                {ORDER_TABLE_COLUMNS.map((column) => (
+                  <th
+                    key={column.id}
+                    className={`${getCellClassName()} ${column.className ?? ''} border-ink border`}
+                  >
+                    {column.header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <AnimatePresence>
+                {items.map((item) => (
+                  <Fragment key={item.tileId}>{children(item)}</Fragment>
+                ))}
+              </AnimatePresence>
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 }

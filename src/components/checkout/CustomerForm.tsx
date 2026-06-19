@@ -1,11 +1,13 @@
 'use client';
 
+import { setField } from '@/app/store/features/checkout';
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
+import { CustomerField } from '@/components/checkout/CustomerField';
+import { type CheckoutFormValues, checkoutSchema } from '@/lib/validation';
+
 import { useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { checkoutSchema, type CheckoutFormValues } from '@/lib/validation';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setField } from '@/store/slices/checkoutSlice';
-import { SketchInput } from '@/components/ui/SketchInput';
 
 export function CustomerForm() {
   const dispatch = useAppDispatch();
@@ -25,36 +27,55 @@ export function CustomerForm() {
   };
 
   return (
-    <section className="flex flex-col gap-5">
-      <SketchInput
+    <section className="flex flex-col gap-1 border-b pb-12 pl-2">
+      <CustomerField
+        id="customer-name"
         label="Customer Name"
         value={checkout.customerName}
-        onChange={(e) => syncField('customerName', e.target.value)}
+        onChange={(v) => syncField('customerName', v)}
         error={errors.customerName?.message}
+        labelClassName="relative top-[4px]"
       />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <SketchInput
+      <div className="flex gap-6">
+        <CustomerField
+          id="phone"
           label="Phone"
           type="tel"
+          className="flex-1"
           value={checkout.phone}
-          onChange={(e) => syncField('phone', e.target.value)}
+          onChange={(v) => syncField('phone', v)}
           error={errors.phone?.message}
+          labelClassName="relative top-[4px]"
         />
-        <SketchInput
+        <CustomerField
+          id="email"
           label="Email"
           type="email"
+          className="flex-1"
           value={checkout.email}
-          onChange={(e) => syncField('email', e.target.value)}
+          onChange={(v) => syncField('email', v)}
           error={errors.email?.message}
+          labelClassName="relative top-[4px]"
         />
       </div>
 
-      <SketchInput
+      <CustomerField
+        id="shipping-address"
         label="Shipping Address"
         value={checkout.shippingAddress}
-        onChange={(e) => syncField('shippingAddress', e.target.value)}
+        onChange={(v) => syncField('shippingAddress', v)}
         error={errors.shippingAddress?.message}
+        labelClassName="relative top-[4px]"
+      />
+
+      <CustomerField
+        id="project-notes"
+        label="Project Notes"
+        value={checkout.projectNotes}
+        onChange={(v) => syncField('projectNotes', v)}
+        error={errors.projectNotes?.message}
+        labelClassName="relative top-[4px]"
       />
     </section>
   );

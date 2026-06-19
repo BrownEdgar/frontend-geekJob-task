@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from '@/store/slices/cartSlice';
-import designGridReducer from '@/store/slices/designGridSlice';
-import checkoutReducer from '@/store/slices/checkoutSlice';
+
+import cartReducer from './features/cart';
+import checkoutReducer from './features/checkout';
+import designGridReducer from './features/designGrid';
 
 export const makeStore = () =>
   configureStore({

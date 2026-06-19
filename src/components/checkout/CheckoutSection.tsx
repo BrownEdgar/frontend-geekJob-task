@@ -1,24 +1,20 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { checkoutSchema, type CheckoutFormValues } from '@/lib/validation';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setField } from '@/store/slices/checkoutSlice';
+import { setField } from '@/app/store/features/checkout';
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
 import { PaymentMethodSelector } from '@/components/checkout/PaymentMethod';
-import { CreditCardFields } from '@/components/checkout/CreditCardFields';
-import { ProjectNotes } from '@/components/checkout/ProjectNotes';
 import { SketchButton } from '@/components/ui/SketchButton';
+import { type CheckoutFormValues, checkoutSchema } from '@/lib/validation';
 
-interface CheckoutSectionProps {
-  showNotes?: boolean;
+import { useForm } from 'react-hook-form';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+
+export interface CheckoutSectionProps {
   showSubmit?: boolean;
 }
 
-export function CheckoutSection({
-  showNotes = true,
-  showSubmit = false,
-}: CheckoutSectionProps) {
+export function CheckoutSection({ showSubmit = false }: CheckoutSectionProps) {
   const dispatch = useAppDispatch();
   const checkout = useAppSelector((s) => s.checkout);
 
@@ -48,32 +44,28 @@ export function CheckoutSection({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-      <PaymentMethodSelector />
-
-      {checkout.paymentMethod === 'credit-card' && (
-        <CreditCardFields
-          cardNumber={checkout.cardNumber}
-          expiration={checkout.expiration}
-          cvv={checkout.cvv}
-          errors={{
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+      <PaymentMethodSelector
+        creditCardFields={{
+          cardNumber: checkout.cardNumber,
+          expiration: checkout.expiration,
+          cvv: checkout.cvv,
+          errors: {
             cardNumber: errors.cardNumber?.message,
             expiration: errors.expiration?.message,
             cvv: errors.cvv?.message,
-          }}
-          onChange={(field, value) => syncField(field, value)}
-        />
-      )}
-
-      {showNotes && (
-        <ProjectNotes
-          value={checkout.projectNotes}
-          onChange={(v) => syncField('projectNotes', v)}
-        />
-      )}
+          },
+          onChange: (field, value) => syncField(field, value),
+        }}
+      />
 
       {showSubmit && (
-        <SketchButton type="submit" variant="primary" size="lg" className="w-full">
+        <SketchButton
+          type="submit"
+          variant="primary"
+          size="lg"
+          className="w-full cursor-pointer rounded-[8px]! font-bold"
+        >
           Place Secure Order
         </SketchButton>
       )}

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 88" fill="none" aria-hidden="true">
+  <!-- kiln body -->
+  <path
+    d="M12 78 V58 C12 24 32 12 32 12 C32 12 52 24 52 58 V78 H44 V74 H20 V78 Z"
+    fill="#C4654A"
+    stroke="#1A1A1A"
+    stroke-width="1.25"
+    stroke-linejoin="round"
+  />
+
+  <!-- firebox opening -->
+  <path
+    d="M20 78 V60 C20 44 32 34 32 34 C32 34 44 44 44 60 V78"
+    fill="#F5F0E6"
+    stroke="#1A1A1A"
+    stroke-width="1.25"
+    stroke-linejoin="round"
+  />
+
+  <!-- hearth -->
+  <rect x="26" y="68" width="12" height="3" rx="0.5" fill="#EDE6D6"/>
+
+  <!-- outer flame -->
+  <path
+    d="M32 66 C27 60 25 54 27 48 C29 53 31 51 32 49 C33 51 35 53 37 48 C39 54 37 60 32 66 Z"
+    fill="#D4A843"
+    stroke="#1A1A1A"
+    stroke-width="1"
+    stroke-linejoin="round"
+  />
+
+  <!-- inner flame -->
+  <path
+    d="M32 62 C29.5 58 28.5 54 29.5 50 C30.5 53 31.5 52 32 51 C32.5 52 33.5 53 34.5 50 C35.5 54 34.5 58 32 62 Z"
+    fill="#E8722A"
+  />
+
+  <!-- door hinges -->
+  <line x1="52" y1="36" x2="58" y2="36" stroke="#1A1A1A" stroke-width="1.25" stroke-linecap="round"/>
+  <line x1="52" y1="44" x2="58" y2="44" stroke="#1A1A1A" stroke-width="1.25" stroke-linecap="round"/>
+</svg>
